@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hesap Makinesi</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&family=Sixtyfour&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="HesapMakinesi.css">
+    <script src="HesapMakinesi.js"></script>
+</head>
+
+<body>
+    <div id="calculator">
+        <input type="text" id="myInput" disabled>
+        <div id="buttonRow1">
+            <button class="gray" onclick="temizle()">C</button>
+            <button class="gray" onclick="sayiGir('±')">±</button>
+            <button class="gray" onclick="yuzdeHesapla()">%</button>
+            <button class="orange" id="bol" onclick="sayiGir('/')">÷</button>
+        </div>
+
+        <div id="buttonRow2">
+            <button class="black" onclick="sayiGir('7')">7</button>
+            <button class="black" onclick="sayiGir('8')">8</button>
+            <button class="black" onclick="sayiGir('9')">9</button>
+            <button class="orange" id="carp" onclick="sayiGir('*')">×</button>
+        </div>
+
+        <div id="buttonRow3">
+            <button class="black" onclick="sayiGir('4')">4</button>
+            <button class="black" onclick="sayiGir('5')">5</button>
+            <button class="black" onclick="sayiGir('6')">6</button>
+            <button class="orange" id="cikar" onclick="sayiGir('-')">-</button>
+        </div>
+
+        <div id="buttonRow4">
+            <button class="black" onclick="sayiGir('1')">1</button>
+            <button class="black" onclick="sayiGir('2')">2</button>
+            <button class="black" onclick="sayiGir('3')">3</button>
+            <button class="orange" id="topla" onclick="sayiGir('+')">+</button>
+        </div>
+
+        <div id="buttonRow5">
+            <div class="groundItemsBig">
+                <button class="black" onclick="sayiGir('0')">0</button>
+            </div>
+
+            <div class="groundItems">
+                <button class="black" onclick="sayiGir(',')">,</button>
+            </div>
+
+            <div class="groundItems">
+                <button class="orange" onclick="esittirSonuc()">=</button>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
