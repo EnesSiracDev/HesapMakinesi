@@ -1,1 +1,1 @@
-Bütün dosyaları (HTML, CSS ve JavaScript) indirip ortak bir klasöre atın. Kodları kopyala yapıştır yapın. Otomatik çalışacaktır.
+Bütün dosyaları (HTML, CSS ve JavaScript) indirip ortak bir klasöre atın. Kodları kopyala yapıştır yapın. HTML klasöründeki 15 ve 16. satırdaki link ve script klasörünü ayarlayın. Otomatik çalışacaktır.
