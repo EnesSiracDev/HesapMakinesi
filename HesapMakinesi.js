@@ -8,6 +8,7 @@ let islemDizisi = [];
 let sayiDizisi = [];
 let tumSayiUzunlugu = 0;
 let virgulSayisi = 0;
+let islemAktif = false;
 
 function sayiGir(deger) {
     if (document.getElementById('myInput').value == "0") {
@@ -22,7 +23,7 @@ function sayiGir(deger) {
             diziyeEklenecek = diziyeEklenecek.replace(',', '.');
         }
         sayiDizisi.push(diziyeEklenecek);
-
+        tumSayiUzunlugu = 0;
         let myIslemButonlari = document.getElementsByClassName("orange")
         let myTopla = document.getElementById("topla");
         let myCikar = document.getElementById("cikar");
@@ -36,8 +37,9 @@ function sayiGir(deger) {
             myTopla.style.backgroundColor = "White";
             myTopla.style.color = "Orange";
 
-            document.getElementById('myInput').value = "";
+            //document.getElementById('myInput').value = "";
             islemDizisi.push(deger);
+            islemAktif = true;
         }
         else if (deger == '-') {
             for (let i = 0; i < myIslemButonlari.length; i++) {
@@ -47,8 +49,9 @@ function sayiGir(deger) {
             myCikar.style.backgroundColor = "White";
             myCikar.style.color = "Orange";
 
-            document.getElementById('myInput').value = "";
+            //document.getElementById('myInput').value = "";
             islemDizisi.push(deger);
+            islemAktif = true;
         }
         else if (deger == '*') {
             for (let i = 0; i < myIslemButonlari.length; i++) {
@@ -58,8 +61,9 @@ function sayiGir(deger) {
             myCarp.style.backgroundColor = "White";
             myCarp.style.color = "Orange";
 
-            document.getElementById('myInput').value = "";
+            //document.getElementById('myInput').value = "";
             islemDizisi.push(deger);
+            islemAktif = true;
         }
         else if (deger == '/') {
             for (let i = 0; i < myIslemButonlari.length; i++) {
@@ -69,8 +73,9 @@ function sayiGir(deger) {
             myBol.style.backgroundColor = "White";
             myBol.style.color = "Orange";
 
-            document.getElementById('myInput').value = "";
+            //document.getElementById('myInput').value = "";
             islemDizisi.push(deger);
+            islemAktif = true;
         }
 
         switch (deger) {
@@ -99,18 +104,21 @@ function sayiGir(deger) {
         }
     }
     else {
+        if (islemAktif == true && (islemDizisi.includes('+') || islemDizisi.includes('-') || islemDizisi.includes('*') || islemDizisi.includes('/'))) {
+            document.getElementById('myInput').value = "";
+            islemAktif = false;
+        }
+
         if (tumSayiUzunlugu < 9) {
             let myInput = document.getElementById('myInput');
             if (myInput.value.includes(",") == false && virgulSayisi == 0 && deger == ',' && myInput.value === '') {
                 document.getElementById('myInput').value = "0,"
-
             }
             else if (myInput.value.includes(",") == false && virgulSayisi == 0 && deger == ',') {
                 document.getElementById('myInput').value += deger;
                 virgulSayisi++;
             }
             else if (myInput.value.includes(",") && virgulSayisi == 1 && deger == ',') {
-
                 console.log("Null")
             }
             else {
@@ -120,7 +128,7 @@ function sayiGir(deger) {
             if (deger != ',') {
                 tumSayiUzunlugu++
             }
-        }
+        }  
     }
 
     fontAyari()
@@ -148,39 +156,48 @@ function fontAyari() {
 
 function temizle() {
 
-    let myTopla = document.getElementById("topla");
-    myTopla.style.backgroundColor = "Orange";
-    myTopla.style.color = "White"
-
-    let myCikar = document.getElementById("cikar");
-    myCikar.style.backgroundColor = "Orange";
-    myCikar.style.color = "White"
-
-    let myCarp = document.getElementById("carp");
-    myCarp.style.backgroundColor = "Orange";
-    myCarp.style.color = "White"
-
-    let myBol = document.getElementById("bol");
-    myBol.style.backgroundColor = "Orange";
-    myBol.style.color = "White"
+    renkDegistir()
 
     document.getElementById('myInput').value = '0';
     tumSayiUzunlugu = 0;
     karaktersayisi = 0;
-    sayiDizisi.splice(0, sayiDizisi.length);
 }
 
 function yuzdeHesapla() {
     let myInput = document.getElementById('myInput').value;
-    let sonuc = myInput / 100;
-    let yuzdeDonustur = sonuc.toString();
-    if (yuzdeDonustur.includes('.')) {
-        let yeniyuzde = yuzdeDonustur.replace('.', ',');
-        document.getElementById('myInput').value = yeniyuzde;
+    
+    let yuzdeDonustur = myInput.toString();
+    if (yuzdeDonustur.includes(',')) {
+        let yeniyuzde = yuzdeDonustur.replace(',', '.');
+        let sonuc = yeniyuzde / 100;
+        let stringCevir = sonuc.toString();
+        if (stringCevir.includes('.')) {
+            let sonSonuc = stringCevir.replace('.', ',');
+            document.getElementById('myInput').value = sonSonuc;
+        }
     }
     else {
-        let yeniyuzde = yuzdeDonustur;
+        let yeniyuzde = yuzdeDonustur / 100;
         document.getElementById('myInput').value = yeniyuzde;
+    }
+
+    renkDegistir()
+    
+}
+
+function pozitifNegatif(){
+    let myInput = document.getElementById('myInput').value;
+    if (myInput !== '0') {
+        if (myInput.includes('-')) {
+            sayi = myInput.slice(1);
+            document.getElementById('myInput').value = sayi;
+        }
+        else{
+            let negatif =  '-' + myInput;
+            document.getElementById('myInput').value = negatif;
+        }
+
+        renkDegistir()
     }
 }
 
@@ -203,7 +220,14 @@ function esittirSonuc() {
         });
         
         let toplama = sayiDizi.reduce((accumulator, currentValue) => accumulator + currentValue);
-        document.getElementById('myInput').value = toplama;
+        
+        if (toplama % 1 === 0) {
+            sonuc = Math.trunc(toplama);
+        }
+        else{
+            sonuc = toplama.toFixed(2);
+        }
+        document.getElementById('myInput').value = sonuc;
 
         let myTopla = document.getElementById("topla");
         myTopla.style.backgroundColor = "Orange";
@@ -211,7 +235,15 @@ function esittirSonuc() {
     }
     else if (varMiCikar == true) {
         let cikarma = sayiDizisi.reduce((accumulator, currentValue) => accumulator - currentValue);
-        document.getElementById('myInput').value = cikarma;
+
+        if (cikarma % 1 === 0) {
+            sonuc = Math.trunc(cikarma);
+        }
+        else{
+            sonuc = cikarma.toFixed(2);
+        }
+ 
+        document.getElementById('myInput').value = sonuc;
 
         let myCikar = document.getElementById("cikar");
         myCikar.style.backgroundColor = "Orange";
@@ -219,7 +251,15 @@ function esittirSonuc() {
     }
     else if (varMiCarp == true) {
         let carpma = sayiDizisi.reduce((accumulator, currentValue) => accumulator * currentValue);
-        document.getElementById('myInput').value = carpma;
+        
+        if (carpma % 1 === 0) {
+            sonuc = Math.trunc(carpma);
+        }
+        else{
+            sonuc = carpma.toFixed(2);
+        }
+
+        document.getElementById('myInput').value = sonuc;
 
         let myCarp = document.getElementById("carp");
         myCarp.style.backgroundColor = "Orange";
@@ -227,7 +267,15 @@ function esittirSonuc() {
     }
     else if (varMiBol == true) {
         let bolme = sayiDizisi.reduce((accumulator, currentValue) => accumulator / currentValue);
-        document.getElementById('myInput').value = bolme;
+        
+        if (bolme % 1 === 0) {
+            sonuc = Math.trunc(bolme);
+        }
+        else{
+            sonuc = bolme.toFixed(2);
+        }
+
+        document.getElementById('myInput').value = sonuc;
 
         let myBol = document.getElementById("bol");
         myBol.style.backgroundColor = "Orange";
@@ -235,4 +283,24 @@ function esittirSonuc() {
     }
 
     islemDizisi.splice(0, islemDizisi.length);
+}
+
+function renkDegistir() {
+    let myTopla = document.getElementById("topla");
+    myTopla.style.backgroundColor = "Orange";
+    myTopla.style.color = "White"
+
+    let myCikar = document.getElementById("cikar");
+    myCikar.style.backgroundColor = "Orange";
+    myCikar.style.color = "White"
+
+    let myCarp = document.getElementById("carp");
+    myCarp.style.backgroundColor = "Orange";
+    myCarp.style.color = "White"
+
+    let myBol = document.getElementById("bol");
+    myBol.style.backgroundColor = "Orange";
+    myBol.style.color = "White"
+
+    sayiDizisi.splice(0, sayiDizisi.length);
 }
